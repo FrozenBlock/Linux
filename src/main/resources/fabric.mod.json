@@ -20,13 +20,22 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.frozenblock.linux.Linux"
+      {
+        "value": "net.frozenblock.linux.Linux",
+        "adapter": "kotlin"
+      }
     ],
     "client": [
-      "net.frozenblock.linux.LinuxClient"
+      {
+        "value": "net.frozenblock.linux.LinuxClient",
+        "adapter": "kotlin"
+      }
     ],
     "fabric-datagen": [
-      "net.frozenblock.linux.datagen.LinuxDataGenerator"
+      {
+        "value": "net.frozenblock.linux.datagen.LinuxDataGenerator",
+        "adapter": "kotlin"
+      }
     ]
   },
   "mixins": [

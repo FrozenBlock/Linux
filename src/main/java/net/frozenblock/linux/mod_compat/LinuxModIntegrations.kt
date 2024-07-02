@@ -1,31 +1,41 @@
-package net.frozenblock.linux.mod_compat;
+package net.frozenblock.linux.mod_compat
 
-import net.frozenblock.lib.integration.api.ModIntegration;
-import net.frozenblock.lib.integration.api.ModIntegrationSupplier;
-import net.frozenblock.lib.integration.api.ModIntegrations;
-import net.frozenblock.linux.util.LinuxConstants;
-import java.util.function.Supplier;
+import net.frozenblock.lib.integration.api.ModIntegration
+import net.frozenblock.lib.integration.api.ModIntegrationSupplier
+import net.frozenblock.lib.integration.api.ModIntegrations
+import net.frozenblock.linux.util.MOD_ID
+import java.util.function.Supplier
 
-public final class LinuxModIntegrations {
+class LinuxModIntegrations private constructor() {
+    init {
+        throw UnsupportedOperationException("TemplateModIntegrations contains only static declarations.")
+    }
 
-	public static final ModIntegration FROZENLIB_INTEGRATION = registerAndGet(FrozenLibIntegration::new, "frozenlib");
+    companion object {
+        val FROZENLIB_INTEGRATION: ModIntegration = registerAndGet(
+            { FrozenLibIntegration() }, "frozenlib"
+        )
 
-	private LinuxModIntegrations() {
-		throw new UnsupportedOperationException("TemplateModIntegrations contains only static declarations.");
-	}
+        fun init() {
+        }
 
-	public static void init() {
-	}
+        fun register(
+            integration: Supplier<out ModIntegration?>?,
+            modID: String
+        ): ModIntegrationSupplier<out ModIntegration> {
+            return ModIntegrations.register(integration, MOD_ID, modID)
+        }
 
-	public static ModIntegrationSupplier<? extends ModIntegration> register(Supplier<? extends ModIntegration> integration, String modID) {
-		return ModIntegrations.register(integration, LinuxConstants.MOD_ID, modID);
-	}
+        fun <T : ModIntegration?> register(
+            integration: Supplier<T>?,
+            unloadedIntegration: Supplier<T>,
+            modID: String
+        ): ModIntegrationSupplier<T> {
+            return ModIntegrations.register(integration, unloadedIntegration, MOD_ID, modID)
+        }
 
-	public static <T extends ModIntegration> ModIntegrationSupplier<T> register(Supplier<T> integration, Supplier<T> unloadedIntegration, String modID) {
-		return ModIntegrations.register(integration, unloadedIntegration, LinuxConstants.MOD_ID, modID);
-	}
-
-	public static <T extends ModIntegration> ModIntegration registerAndGet(Supplier<T> integration, String modID) {
-		return ModIntegrations.register(integration, LinuxConstants.MOD_ID, modID).getIntegration();
-	}
+        fun <T : ModIntegration?> registerAndGet(integration: Supplier<T>?, modID: String): ModIntegration {
+            return ModIntegrations.register(integration, MOD_ID, modID).integration
+        }
+    }
 }

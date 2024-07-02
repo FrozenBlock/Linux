@@ -1,31 +1,29 @@
-package net.frozenblock.linux.util;
+package net.frozenblock.linux.util
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.ModContainer
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-public final class LinuxConstants {
-	private LinuxConstants() {
-		throw new UnsupportedOperationException("LinuxConstants contains only static declarations.");
-	}
 
-	public static final String MOD_ID = "linux";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static boolean DEV_LOGGING = false;
-	/**
-	 * Used for features that may be unstable and crash in public builds.
-	 * <p>
-	 * It's smart to use this for at least registries.
-	 */
-	public static boolean UNSTABLE_LOGGING = FabricLoader.getInstance().isDevelopmentEnvironment();
-	public static final ModContainer MOD_CONTAINER = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow();
-	public static boolean areConfigsInit = false;
+const val MOD_ID: String = "linux"
+val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
+var DEV_LOGGING: Boolean = false
 
-	/**
-	 * Used for datafixers.
-	 * <p>
-	 * Is not necessary for a normal mod, but can be useful in some cases.
-	 */
-	public static final int DATA_VERSION = 0;
-}
+/**
+ * Used for features that may be unstable and crash in public builds.
+ *
+ *
+ * It's smart to use this for at least registries.
+ */
+var UNSTABLE_LOGGING: Boolean = FabricLoader.getInstance().isDevelopmentEnvironment
+val MOD_CONTAINER: ModContainer = FabricLoader.getInstance().getModContainer(MOD_ID).orElseThrow()
+
+/**
+ * Used for datafixers.
+ *
+ *
+ * Is not necessary for a normal mod, but can be useful in some cases.
+ */
+const val DATA_VERSION: Int = 0
+
