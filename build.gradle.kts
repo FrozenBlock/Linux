@@ -1,7 +1,3 @@
-import com.matthewprenger.cursegradle.CurseArtifact
-import com.matthewprenger.cursegradle.CurseExtension
-import com.matthewprenger.cursegradle.CurseProject
-import com.matthewprenger.cursegradle.CurseRelation
 import com.modrinth.minotaur.ModrinthExtension
 import groovy.xml.XmlSlurper
 import org.ajoberstar.grgit.Grgit
@@ -25,17 +21,15 @@ buildscript {
 
 plugins {
     id("fabric-loom") version("+")
-    id("io.github.juuxel.loom-quiltflower") version("+")
     id("org.quiltmc.gradle.licenser") version("+")
     id("org.ajoberstar.grgit") version("+")
     id("com.modrinth.minotaur") version("+")
-    id("com.matthewprenger.cursegradle") version("+")
     `maven-publish`
     eclipse
     idea
     `java-library`
     java
-    kotlin("jvm") version("1.9.0")
+    kotlin("jvm") version("2.0.0")
 }
 
 val minecraft_version: String by project
@@ -175,13 +169,6 @@ repositories {
     maven {
         url = uri("https://maven.shedaniel.me/")
     }
-    maven {
-        url = uri("https://cursemaven.com")
-
-        content {
-            includeGroup("curse.maven")
-        }
-    }
     /*maven {
         name = "Siphalor's Maven"
         url = uri("https://maven.siphalor.de")
@@ -214,8 +201,8 @@ dependencies {
     minecraft("com.mojang:minecraft:${minecraft_version}")
     mappings(loom.layered {
         // please annoy treetrain if this doesnt work
-        mappings("org.quiltmc:quilt-mappings:${quilt_mappings}:intermediary-v2")
-        parchment("org.parchmentmc.data:parchment-${parchment_mappings}@zip")
+        //mappings("org.quiltmc:quilt-mappings:${quilt_mappings}:intermediary-v2")
+        //parchment("org.parchmentmc.data:parchment-${parchment_mappings}@zip")
         officialMojangMappings {
             nameSyntheticMembers = false
         }
@@ -229,18 +216,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${fabric_kotlin_version}")
 
     // FrozenLib
-    println("Using local FrozenLib: $local_frozenlib")
     if (local_frozenlib) {
        implementation(project(path = ":FrozenLib", configuration = "dev"))?.let { include(it) }
     } else {
         modImplementation("maven.modrinth:frozenlib:${frozenlib_version}")?.let { include(it) }
     }
-
-    // CaffeineConfig
-    //include(modImplementation("net.caffeinemc:mixin-config:1.0.0+1.17"))
-
-    // Simple Copper Pipes
-    modCompileOnly("maven.modrinth:simple-copper-pipes:${copperpipes_version}")
 
     // Mod Menu
     modCompileOnly("com.terraformersmc:modmenu:${modmenu_version}")
@@ -250,70 +230,11 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
         exclude(group = "com.terraformersmc")
     }
-
-    // Brush Extender
-    modImplementation("com.github.Treetrain1:BrushExtender:main-SNAPSHOT")?.let { include(it) }
-
-    // NBT Crafting
-    modImplementation("com.github.Treetrain1:nbt-crafting:jitpack-1.20-SNAPSHOT")?.let { include(it) }
-
-    // CaffeineConfig
-    modImplementation("net.caffeinemc:mixin-config:1.0.0+1.17")?.let { include(it) }
-
-    // TerraBlender
-    modCompileOnly("com.github.glitchfiend:TerraBlender-fabric:${terrablender_version}")
-
-    // Sodium
-    modCompileOnly("maven.modrinth:sodium:${sodium_version}")
-    modCompileOnly("org.anarres:jcpp:1.4.14")
-
-    // BetterEnd
-    modCompileOnly("maven.modrinth:betterend:${betterend_version}")
-
-    // BetterNether
-    modCompileOnly("maven.modrinth:betternether:${betternether_version}")
-    /*
-        // only affects runClient, does not affect gradlew build.
-        // add -PuseThirdPartyMods=false to not use these
-        if (findProperty("useThirdPartyMods") != "false") {
-            modRuntimeOnly("maven.modrinth:ferrite-core:${ferritecore_version}")
-            modRuntimeOnly("maven.modrinth:lazydfu:${lazydfu_version}")
-            modRuntimeOnly("maven.modrinth:starlight:${starlight_version}")
-            modRuntimeOnly("maven.modrinth:lithium:${lithium_version}")
-            modRuntimeOnly("maven.modrinth:fastanim:${fastanim_version}")
-
-            modRuntimeOnly("maven.modrinth:entityculling:${entityculling_version}")
-            modRuntimeOnly("maven.modrinth:memoryleakfix:${memoryleakfix_version}")
-            modRuntimeOnly("maven.modrinth:no-unused-chunks:${no_unused_chunks_version}")
-            //modRuntimeOnly("maven.modrinth:exordium:${exordium_version}")
-            //modRuntimeOnly("maven.modrinth:entity-collision-fps-fix:${entity_collision_fps_fix_version}")
-            //modRuntimeOnly("maven.modrinth:cull-less-leaves:${cull_less_leaves_version}")
-            //modRuntimeOnly("maven.modrinth:c2me-fabric:${c2me_version}")
-            //modRuntimeOnly("maven.modrinth:moreculling:${more_culling_version}")
-            //modRuntimeOnly("maven.modrinth:smoothboot-fabric:${smoothboot_version}")
-        }
-
-        // only affects runClient, does not affect gradlew build.
-        // add -PuseExperimentalThirdParty=true to the gradle runClient
-        // command to use these
-        if (findProperty("useExperimentalThirdParty") == "true") {
-            modRuntimeOnly("maven.modrinth:terralith:${terralith_version}")
-            modRuntimeOnly("maven.modrinth:sodium:${sodium_version}")
-            modRuntimeOnly("org.joml:joml:1.10.4")
-            modRuntimeOnly("org.anarres:jcpp:1.4.14")
-            //modRuntimeOnly "maven.modrinth:iris:${iris_version}"
-            modRuntimeOnly("maven.modrinth:indium:${indium_version}")
-            modRuntimeOnly("me.flashyreese.mods:reeses-sodium-options:${reeses_sodium_options_version}") {
-                exclude(group = "net.coderbot.iris_mc1_19", module = "iris")
-            }
-            modRuntimeOnly("me.flashyreese.mods:sodium-extra-fabric:${sodium_extra_version}")
-            modRuntimeOnly("io.github.douira:glsl-transformer:0.27.0")
-        }*/
 }
 
-quiltflower {
+/*vineflower {
     quiltflowerVersion.set("1.8.0")
-}
+}*/
 
 tasks {
     processResources {
@@ -361,8 +282,8 @@ tasks {
 
     withType(JavaCompile::class) {
         options.encoding = "UTF-8"
-        // Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-        options.release.set(17)
+        // Minecraft 1.20.5 (24w14a) upwards uses Java 21.
+        options.release.set(21)
         options.isFork = true
         options.isIncremental = true
     }
@@ -382,8 +303,8 @@ val sourcesJar: Task by tasks
 val javadocJar: Task by tasks
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
@@ -499,9 +420,7 @@ extra {
 }
 
 val modrinth_id: String by extra
-val curseforge_id: String by extra
 val release_type: String by extra
-val curseforge_minecraft_version: String by extra
 val changelog_file: String by extra
 
 val modrinth_version = makeModrinthVersion(mod_version)
@@ -537,31 +456,6 @@ fun getBranch(): String {
 
     branch = grgit.branch.current().name
     return branch.substring(branch.lastIndexOf("/") + 1)
-}
-
-curseforge {
-    val token = System.getenv("CURSEFORGE_TOKEN")
-    apiKey = if (token == null || token.isEmpty()) "unset" else token
-    val gameVersion = if (curseforge_minecraft_version != "null") curseforge_minecraft_version else minecraft_version
-    project(closureOf<CurseProject> {
-        id = curseforge_id
-        changelog = changelog_text
-        releaseType = release_type
-        addGameVersion("Fabric")
-        addGameVersion("Quilt")
-        addGameVersion(gameVersion)
-        relations(closureOf<CurseRelation> {
-            requiredDependency("fabric-api")
-            embeddedLibrary("frozenlib")
-        })
-        mainArtifact(file("build/libs/${tasks.remapJar.get().archiveBaseName.get()}-${version}.jar"), closureOf<CurseArtifact> {
-            displayName = display_name
-        })
-        afterEvaluate {
-            uploadTask.dependsOn(remapJar)
-        }
-    })
-    curseGradleOptions.forgeGradleIntegration = false
 }
 
 modrinth {
@@ -610,6 +504,5 @@ val github by tasks.register("github") {
 val publishMod by tasks.register("publishMod") {
     dependsOn(tasks.publish)
     dependsOn(github)
-    dependsOn(tasks.curseforge)
     dependsOn(tasks.modrinth)
 }

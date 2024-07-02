@@ -1,52 +1,46 @@
 {
   "schemaVersion": 1,
-  "id": "frozenblock_template_mod",
+  "id": "linux",
   "version": "${version}",
 
-  "name": "FrozenBlock Template Mod",
+  "name": "Linux",
   "description": "Template description",
   "authors": [
     "FrozenBlock"
   ],
   "contact": {
-    "homepage": "https://github.com/FrozenBlock/frozenblock-template-mod",
-    "sources": "https://github.com/FrozenBlock/frozenblock-template-mod",
-    "issues": "https://github.com/FrozenBlock/frozenblock-template-mod/issues"
+    "homepage": "https://github.com/FrozenBlock/linux",
+    "sources": "https://github.com/FrozenBlock/linux",
+    "issues": "https://github.com/FrozenBlock/linux/issues"
   },
 
   "license": "LGPL-3.0",
-  "icon": "assets/frozenblock_template_mod/icon.png",
+  "icon": "assets/linux/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.frozenblock.template.TemplateMod"
+      "net.frozenblock.linux.Linux"
     ],
     "client": [
-      "net.frozenblock.template.TemplateModClient"
+      "net.frozenblock.linux.LinuxClient"
     ],
     "fabric-datagen": [
-      "net.frozenblock.template.datagen.TemplateModDataGenerator"
+      "net.frozenblock.linux.datagen.LinuxDataGenerator"
     ]
   },
   "mixins": [
-    "frozenblock_template_mod.mixins.json"
+    "linux.mixins.json"
   ],
-  "accessWidener": "frozenblock_template_mod.accesswidener",
+  "accessWidener": "linux.accesswidener",
 
   "depends": {
-    "frozenlib": ">=1.1.11-",
+    "frozenlib": ">=1.7.4-",
     "fabric-language-kotlin": "${fabric_kotlin_version}",
-    "fabricloader": ">=0.14.12",
-    "fabric-api": ">=0.73.0",
+    "fabricloader": ">=0.15.11",
+    "fabric-api": ">=0.100.4",
     "minecraft": ">=${minecraft_version}",
-    "java": ">=17"
-  },
-  "breaks": {
-    "quilted_fabric_api": "4.0.0-beta.8"
-  },
-  "suggests": {
-    "cloth-config": "*"
+    "java": ">=21"
   },
   "custom": {
     "modmenu": {
