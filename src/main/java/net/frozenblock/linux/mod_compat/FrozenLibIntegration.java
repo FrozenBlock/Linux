@@ -1,8 +1,8 @@
-package net.frozenblock.template.mod_compat;
+package net.frozenblock.linux.mod_compat;
 
 import net.frozenblock.lib.integration.api.ModIntegration;
-import net.frozenblock.template.util.TemplateModSharedConstants;
-import net.frozenblock.template.util.TemplateModUtils;
+import net.frozenblock.linux.util.LinuxConstants;
+import net.frozenblock.linux.util.LinuxUtils;
 
 public class FrozenLibIntegration extends ModIntegration {
 	public FrozenLibIntegration() {
@@ -11,6 +11,6 @@ public class FrozenLibIntegration extends ModIntegration {
 
 	@Override
 	public void init() {
-		TemplateModUtils.log("FrozenLib integration ran!", TemplateModSharedConstants.UNSTABLE_LOGGING);
+		LinuxUtils.log("FrozenLib integration ran!", LinuxConstants.UNSTABLE_LOGGING);
 	}
 }
